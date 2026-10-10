@@ -1,0 +1,197 @@
+<div
+  class="relative flex flex-col w-full h-screen bg-gradient-to-b from-black via-mauve-950 to-cyan-950 text-white overflow-hidden"
+>
+  <header
+    *ngIf="modoActivo !== 'menu'"
+    class="absolute top-0 left-0 right-0 z-30 flex items-center justify-center pt-6 pb-2 pointer-events-none animate-fade-in"
+  >
+    <div
+      class="w-12 h-12 rounded-full bg-white animate-float animate-glow flex items-center justify-center shadow-2xl relative scale-75"
+    >
+      <div
+        class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-100 via-white to-purple-100 opacity-90"
+      ></div>
+    </div>
+  </header>
+
+  <div
+    class="relative flex-1 flex flex-col items-center justify-center p-4 overflow-hidden"
+  >
+    <div
+      *ngIf="modoActivo === 'menu'"
+      class="flex flex-col items-center justify-center z-10 my-auto animate-fade-in"
+    >
+      <div
+        class="w-36 h-36 md:w-44 md:h-44 rounded-full bg-white animate-float animate-glow flex items-center justify-center shadow-2xl relative"
+      >
+        <div
+          class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-tr from-indigo-100 via-white to-purple-100 opacity-90"
+        ></div>
+      </div>
+      <div
+        class="text-center mt-8 max-w-lg transition-opacity duration-500 px-4"
+      >
+        <h2
+          class="text-xl md:text-2xl font-semibold text-slate-100 leading-snug"
+        >
+          Bienvenido(a) estudiante, soy Botcente! <br />Tu docente de apoyo
+          virtual
+        </h2>
+        <p class="text-sm text-slate-400 mt-2">
+          Por favor elige una de estas opciones para comenzar:
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 mt-8 z-10">
+        <button
+          mat-raised-button
+          class="!py-6 !px-8 !rounded-2xl !bg-white hover:!bg-slate-200 !text-black shadow-lg shadow-white/10 flex items-center text-base font-medium"
+          (click)="seleccionarOpcion('evaluar')"
+        >
+          Evaluar Tarea
+        </button>
+
+        <button
+          mat-raised-button
+          class="!py-6 !px-8 !rounded-2xl !bg-white hover:!bg-slate-200 !text-black shadow-lg shadow-white/10 flex items-center text-base font-medium"
+          (click)="seleccionarOpcion('chat')"
+        >
+          Chat Pedagógico
+        </button>
+      </div>
+    </div>
+
+    <main
+      *ngIf="modoActivo !== 'menu'"
+      #scrollContainer
+      class="w-full flex-1 pt-20 pb-6 px-4 md:px-8 overflow-y-auto no-scrollbar space-y-3 z-0 animate-fade-in [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_95%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_95%,transparent_100%)]"
+    >
+      <div *ngFor="let item of historial" class="flex flex-col w-full">
+        <div
+          *ngIf="item.emisor === 'bot'"
+          class="flex items-start space-x-3 max-w-[90%] md:max-w-[75%]"
+        >
+          <div
+            class="bg-slate-900/90 border border-slate-800 rounded-2xl rounded-tl-none p-3.5 text-slate-200 shadow-md"
+          >
+            <p class="whitespace-pre-line text-xs md:text-sm leading-relaxed">
+              {{ item.texto }}
+            </p>
+          </div>
+        </div>
+
+        <div
+          *ngIf="item.emisor === 'usuario'"
+          class="flex items-end justify-end space-x-3 self-end max-w-[90%] md:max-w-[75%] mt-2"
+        >
+          <div
+            class="bg-slate-700 text-white rounded-2xl rounded-tr-none p-3.5 shadow-md border-1 border-slate-500"
+          >
+            <div
+              *ngIf="item.archivoNombre"
+              class="flex items-center space-x-2 bg-slate-400/30 p-1.5 rounded-lg mb-1.5 text-xs"
+            >
+              <i class="fa-solid fa-file text-slate-200 text-xs"></i>
+              <span class="truncate max-w-xs">{{ item.archivoNombre }}</span>
+            </div>
+            <p
+              *ngIf="item.texto"
+              class="text-xs md:text-sm leading-relaxed whitespace-pre-line"
+            >
+              {{ item.texto }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="cargando"
+        class="flex items-center space-x-3 text-slate-300 text-xs bg-slate-900/80 border border-slate-800 p-3 rounded-2xl w-max"
+      >
+        <mat-spinner diameter="16"></mat-spinner>
+        <span
+          >Un momento estimado alumno, en instantes te brindo una
+          respuesta...</span
+        >
+      </div>
+    </main>
+  </div>
+
+  <div
+    *ngIf="archivoSeleccionado && modoActivo === 'evaluar'"
+    class="bg-slate-950/90 border-t border-slate-800 px-6 py-2 z-20 animate-fade-in"
+  >
+    <div
+      class="w-full flex items-center justify-between text-xs text-slate-300"
+    >
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-file text-slate-400 text-sm"></i>
+        <span class="font-medium truncate max-w-md text-slate-200">{{
+          archivoSeleccionado.name
+        }}</span>
+      </div>
+      <button
+        type="button"
+        class="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-200 transition-colors duration-200"
+        (click)="quitarArchivo()"
+      >
+        <i class="fa-solid fa-circle-xmark text-sm"></i>
+      </button>
+    </div>
+  </div>
+
+  <footer
+    *ngIf="modoActivo !== 'menu'"
+    class="bg-slate-950 border-t border-transparent p-4 z-20 animate-fade-in"
+  >
+    <div class="w-full max-w-7xl mx-auto">
+      <form (ngSubmit)="enviar()" class="flex items-end space-x-2 md:space-x-3">
+        <button
+          type="button"
+          class="!bg-slate-800 hover:!bg-slate-700 !text-slate-300 mb-1 p-3 rounded-full transition-colors duration-200"
+          (click)="reiniciarFlujo()"
+          [disabled]="cargando"
+        >
+          <i class="fa-solid fa-rotate-left"></i>
+        </button>
+        <ng-container *ngIf="modoActivo === 'evaluar'">
+          <input
+            type="file"
+            #fileInput
+            (change)="onFileSelected($event)"
+            accept="image/*,.pdf"
+            class="hidden"
+          />
+          <button
+            type="button"
+            class="!bg-slate-800 hover:!bg-slate-700 !text-slate-300 mb-1 p-3 rounded-full transition-colors duration-200"
+            (click)="fileInput.click()"
+            [disabled]="cargando"
+          >
+            <i class="fa-solid fa-paperclip"></i>
+          </button>
+        </ng-container>
+        <div class="flex-1 relative">
+          <textarea
+            [(ngModel)]="mensajeTexto"
+            name="mensajeTexto"
+            rows="1"
+            placeholder="Escribe tu consulta o respuesta..."
+            [disabled]="cargando"
+            (keydown.enter)="onKeydownEnter($event)"
+            class="w-full bg-slate-950/80 border border-white/30 text-white placeholder-slate-400 text-sm rounded-2xl px-4 py-3 focus:outline-none animate-border-glow resize-none max-h-32 min-h-[46px] overflow-y-auto textarea-scroll transition-all duration-300"
+          ></textarea>
+        </div>
+        <button
+          color="primary"
+          type="submit"
+          class="!bg-slate-700 !text-white hover:!bg-white hover:!text-slate-700 transition-colors duration-200 !w-12 !h-12 flex-shrink-0 mb-0.5 p-3 rounded-full text-center"
+          [disabled]="
+            cargando || (!mensajeTexto.trim() && !archivoSeleccionado)
+          "
+        >
+          <i class="fa-regular fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </footer>
+</div>

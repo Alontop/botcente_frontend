@@ -1,1 +1,100 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@theme {
+  --font-sans: "Google Sans", sans-serif;
+}
+html,
+body {
+  font-family: "Google Sans", sans-serif !important;
+  margin: 0;
+  height: 100%;
+}
+*:not(i):not([class*="fa-"]),
+*:not(i):not([class*="fa-"]):before,
+*:not(i):not([class*="fa-"]):after,
+button,
+input,
+optgroup,
+select,
+textarea,
+.mat-typography {
+  font-family: "Google Sans", sans-serif !important;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+app-root {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+@theme {
+  --animate-float: float 0.5s ease-in-out infinite;
+  --animate-glow: pulseGlow 7s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-40px);
+    }
+  }
+
+  @keyframes pulseGlow {
+    0%,
+    100% {
+      box-shadow:
+        0 0 25px 8px rgba(147, 197, 253, 0.7),
+        0 0 50px 18px rgba(186, 230, 253, 0.4);
+    }
+
+    33% {
+      box-shadow:
+        0 0 25px 8px rgba(216, 180, 254, 0.7),
+        0 0 50px 18px rgba(233, 213, 255, 0.4);
+    }
+
+    66% {
+      box-shadow:
+        0 0 25px 8px rgba(134, 239, 172, 0.7),
+        0 0 50px 18px rgba(187, 247, 208, 0.4);
+    }
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
